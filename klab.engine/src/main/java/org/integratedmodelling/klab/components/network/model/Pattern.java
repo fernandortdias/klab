@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.integratedmodelling.kim.api.IKimConcept.Type;
 import org.integratedmodelling.kim.model.Kim;
@@ -100,7 +101,7 @@ public class Pattern extends GroovyObjectSupport implements IPattern {
 				BlockCutpointGraph<IObservation, Edge> inspector = new BlockCutpointGraph<>(network);
 				for (Graph<IObservation, Edge> subgraph : inspector.vertexSet()) {
 					ret.add(new Network(
-							new HashSet<IObservation>(subgraph.edgeSet().stream().map((e) -> e.relationship).toList()),
+							    new HashSet<IObservation>(subgraph.edgeSet().stream().map((e) -> e.relationship).collect(Collectors.toList())),
 							scope));
 				}
 

@@ -67,7 +67,7 @@ public class FindEmptyRasters {
                 for (File file : files) {
                     String fname = MiscUtilities.getFileBaseName(file);
                     if (fname.startsWith("tile_")) {
-                        tiles.append((tiles.isEmpty() ? "" : ",") + fname.substring(5));
+                        tiles.append((tiles.toString().isEmpty() ? "" : ",") + fname.substring(5));
                     }
                 }
                 
