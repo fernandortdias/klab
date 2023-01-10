@@ -16,6 +16,7 @@ import org.integratedmodelling.klab.hub.service.OAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,6 +39,7 @@ import com.google.common.net.HttpHeaders;
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@Order(2) 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired

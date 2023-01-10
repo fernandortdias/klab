@@ -55,8 +55,8 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping(value= API.HUB.USER_BASE, produces = "application/json")
-	public ResponseEntity<?> newUserRegistration(@RequestBody SignupRequest request) throws UserExistsException, UserEmailExistsException {
-		User user = userService.registerNewUser(request.getUsername(), request.getEmail());
+	public ResponseEntity<?> newUserRegistration(@PathVariable String opid, @RequestBody SignupRequest request) throws UserExistsException, UserEmailExistsException {
+		User user = userService.registerNewUser(request.getUsername(), request.getEmail(), Boolean.valueOf(opid));
 		TokenVerifyAccountClickback token = (TokenVerifyAccountClickback)
 				tokenService.createToken(user.getUsername()
 						, TokenType.verify);
@@ -100,7 +100,7 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping(value=API.HUB.USER_BASE_ID, params = API.HUB.PARAMETERS.USER_REQUEST_PASSWORD)
-	@PreAuthorize("authentication.getPrincipal() == #id" )
+	@PreAuthorize("@securityService.isUser(#id)" )
 	public ResponseEntity<?> authorizedPasswordChange(@PathVariable String id) {
 		TokenChangePasswordClickback token = (TokenChangePasswordClickback)
 				tokenService.createToken(id, TokenType.password);

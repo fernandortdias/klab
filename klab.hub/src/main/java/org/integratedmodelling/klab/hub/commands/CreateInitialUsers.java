@@ -25,16 +25,16 @@ public class CreateInitialUsers {
 	private UserRepository userRepository;
 	private	LdapUserDetailsManager ldapUserDetailsManager;
 	private PasswordEncoder passwordEncoder;
-	
-	public CreateInitialUsers(MongoGroupRepository groupRepository,
-			UserRepository userRepository,
-			LdapUserDetailsManager ldapUserDetailsManager,
-			PasswordEncoder passwordEncoder) {
-		this.groupRepository = groupRepository;
-		this.userRepository = userRepository;
-		this.ldapUserDetailsManager = ldapUserDetailsManager;
-		this.passwordEncoder = passwordEncoder;
-	}
+    
+    public CreateInitialUsers(MongoGroupRepository groupRepository,
+            UserRepository userRepository,
+            LdapUserDetailsManager ldapUserDetailsManager,
+            PasswordEncoder passwordEncoder) {
+        this.groupRepository = groupRepository;
+        this.userRepository = userRepository;
+        this.ldapUserDetailsManager = ldapUserDetailsManager;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 	public void execute() {
 		createInitialUsers();

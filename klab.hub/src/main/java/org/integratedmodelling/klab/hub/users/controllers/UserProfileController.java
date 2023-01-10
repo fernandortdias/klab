@@ -34,7 +34,7 @@ public class UserProfileController {
 	}
 	
 	@GetMapping(API.HUB.USER_BASE_ID)
-	@PreAuthorize("authentication.getPrincipal() == #id or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
+	@PreAuthorize("@securityService.isUser(#id) or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
 	public ResponseEntity<?> getUserProfile(@PathVariable String id) {
 		ProfileResource profile = userService.getUserProfile(id);
 		return new ResponseEntity<>(profile,HttpStatus.ACCEPTED);
@@ -44,20 +44,21 @@ public class UserProfileController {
 	// TODO this is call from single user, not need PreAuthorize
 	// @PreAuthorize("authentication.getPrincipal() == #username or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
 	//correct the auth should be caught on the token filter side.
-	public ResponseEntity<?> getCurrentUserProfile() {
-		ProfileResource profile = userService.getCurrentUserProfile();
+	@PreAuthorize("@securityService.isUser(#id)")
+	public ResponseEntity<?> getCurrentUserProfile(@PathVariable String id, @PathVariable String opid) {
+		ProfileResource profile = userService.getCurrentUserProfile(Boolean.valueOf(opid));
 		return new ResponseEntity<>(profile,HttpStatus.ACCEPTED);
 	}
 
 	@PutMapping(API.HUB.USER_BASE_ID)
-	@PreAuthorize("authentication.getPrincipal() == #id" )
+	@PreAuthorize("@securityService.isUser(#id)" )
 	public ResponseEntity<?> updateUserProfile(@PathVariable String id, @RequestBody UpdateUserRequest updateRequest) {
 		ProfileResource profile = userService.updateUserByProfile(updateRequest.getProfile());
 		return new ResponseEntity<>(profile,HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping(value= API.HUB.USER_BASE_ID, params = "remote-login")
-	@PreAuthorize("authentication.getPrincipal() == #id")
+	@PreAuthorize("@securityService.isUser(#id)")
 	public ResponseEntity<?> getFullUserProfile(@PathVariable String id) {
 		ProfileResource profile = userService.getRawUserProfile(id);
 		return new ResponseEntity<>(profile,HttpStatus.ACCEPTED);

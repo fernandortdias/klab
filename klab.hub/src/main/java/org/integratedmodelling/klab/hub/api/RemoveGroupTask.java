@@ -81,8 +81,8 @@ public class RemoveGroupTask extends ModifyGroupsTask{
 
 	}
 
-	public RemoveGroupTask(String username, Set<GroupEntry> requestGroups) {
-		super(username, requestGroups);
+	public RemoveGroupTask(String username, Set<GroupEntry> requestGroups, boolean opid) {
+		super(username, requestGroups, opid);
 	}
 	
 		@Override

@@ -36,21 +36,24 @@ public class ModifyGroupsController {
 	TaskService service;
 	
 	@PostMapping(value= API.HUB.TASK_BASE, produces = "application/json", params=API.HUB.PARAMETERS.USER_REQUEST_GROUPS)
-	@PreAuthorize("authentication.principal == #username or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
+	@PreAuthorize("@securityService.isUser(#username) or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
 	public ResponseEntity<?> requestGroupsResponse(
+	        @PathVariable String opid, 
 			@RequestParam(API.HUB.PARAMETERS.USER_REQUEST_GROUPS) String username,
 			@RequestBody List<String> groupNames,
 			HttpServletRequest request,
 			UriComponentsBuilder b) {
 		List<Task> tasks = service.createTasks(
 				GroupRequestTask.class,
-				new ModifyGroupsTask.Parameters(request, username, groupNames, GroupRequestTask.class));
+				new ModifyGroupsTask.Parameters(request, username, groupNames, GroupRequestTask.class),
+				Boolean.valueOf(opid));
 	    return new ResponseEntity<>(tasks, HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping(value= API.HUB.TASK_BASE, produces = "application/json", params=API.HUB.PARAMETERS.USER_REMOVE_GROUPS)
-	@PreAuthorize("authentication.principal == #username or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
+	@PreAuthorize("@securityService.isUser(#username) or hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
 	public ResponseEntity<?> removeGroupsResponse(
+	        @PathVariable String opid, 
 			@RequestParam(API.HUB.PARAMETERS.USER_REMOVE_GROUPS) String username,
 			@RequestBody List<String> groupNames,
 			HttpServletRequest request,
@@ -58,7 +61,8 @@ public class ModifyGroupsController {
 		
 		List<Task> tasks = service.createTasks(
 				RemoveGroupTask.class,
-				new ModifyGroupsTask.Parameters(request, username, groupNames, RemoveGroupTask.class));
+				new ModifyGroupsTask.Parameters(request, username, groupNames, RemoveGroupTask.class),
+				Boolean.valueOf(opid));
 	    return new ResponseEntity<>(tasks, HttpStatus.ACCEPTED);
 	}
 	

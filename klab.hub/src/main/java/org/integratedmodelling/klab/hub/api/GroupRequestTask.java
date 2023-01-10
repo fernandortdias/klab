@@ -79,8 +79,8 @@ public class GroupRequestTask extends ModifyGroupsTask{
 
 	}
 
-	public GroupRequestTask(String username, Set<GroupEntry> requestGroups) {
-		super(username, requestGroups);
+	public GroupRequestTask(String username, Set<GroupEntry> requestGroups, boolean opid) {
+		super(username, requestGroups, opid);
 	}
 
 	@Override

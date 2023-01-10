@@ -14,7 +14,9 @@ public interface UserProfileService {
 	abstract ProfileResource getUserProfileByEmail(String emai);
 	abstract ProfileResource getUserSafeProfile(User user);
 	abstract ProfileResource getRawUserProfile(String username);
-	abstract ProfileResource getCurrentUserProfile();
+    // abstract ProfileResource getCurrentUserProfile();
 	abstract Set<ProfileResource> getAllUserProfiles();
+    abstract Boolean existUserProfile(String username);
+    abstract ProfileResource getCurrentUserProfile(boolean opid);
 
 }

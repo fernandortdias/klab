@@ -51,7 +51,7 @@ public static class Parameters extends TaskParameters {
 		UserRepository userRepository;
 		
 		@Override
-		public List<Task> build(TaskParameters parameters) {
+		public List<Task> build(TaskParameters parameters, boolean opid) {
 			
 			ModifyGroupsTask.Parameters param;
 			if (parameters instanceof ModifyGroupsTask.Parameters) {
@@ -158,8 +158,8 @@ public static class Parameters extends TaskParameters {
         	.collect(Collectors.toList());
 	}
 
-	protected ModifyGroupsTask(String username, Set<GroupEntry> requestGroups) {
-		super();
+	protected ModifyGroupsTask(String username, Set<GroupEntry> requestGroups, boolean opid) {
+		super(opid);
 		this.username = username;
 		this.requestGroups = requestGroups;
 	}

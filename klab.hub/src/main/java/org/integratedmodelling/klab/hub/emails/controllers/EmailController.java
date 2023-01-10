@@ -88,8 +88,8 @@ public class EmailController {
 	 * @return the created email template
 	 */
 	@RequestMapping(value = API.HUB.EMAIL_BASE, method = RequestMethod.POST, params="createTemplate", produces = "application/json")
-	public ResponseEntity<Object> createEmailTemplate(@RequestBody EmailTemplate emailTemplate) {
-		checkUserName(emailTemplate);
+	public ResponseEntity<Object> createEmailTemplate(@PathVariable String opid, @RequestBody EmailTemplate emailTemplate) {
+		checkUserName(emailTemplate, Boolean.valueOf(opid));
 		try {
 			emailTemplateService.create(emailTemplate);
 		} catch (DuplicateKeyException dke) {
@@ -105,8 +105,8 @@ public class EmailController {
 	 * @return the updated template
 	 */
 	@RequestMapping(value = API.HUB.EMAIL_BASE_ID, method = RequestMethod.PUT)
-	public ResponseEntity<Object> updateGroup(@PathVariable("id") String id, @RequestBody EmailTemplate emailTemplate) {
-		checkUserName(emailTemplate);
+	public ResponseEntity<Object> updateGroup(@PathVariable("id") String id, @PathVariable String opid, @RequestBody EmailTemplate emailTemplate) {
+		checkUserName(emailTemplate, Boolean.valueOf(opid));
 		emailTemplateService.update(emailTemplate);
 		return new ResponseEntity<>("The template has been updated successfully", HttpStatus.OK);
 	}
@@ -134,9 +134,9 @@ public class EmailController {
 		return new ResponseEntity<>(emailTemplate, HttpStatus.OK);		
 	}
 	
-	private void checkUserName(EmailTemplate emailTemplate) {
+	private void checkUserName(EmailTemplate emailTemplate, boolean opid) {
 		if (emailTemplate.getAuthorUsername() == null) {
-			emailTemplate.setAuthorUsername(profileService.getCurrentUserProfile().getUsername());
+			emailTemplate.setAuthorUsername(profileService.getCurrentUserProfile(opid).getUsername());
 		} else {
 			Optional<User> user = userRepository.findByName(emailTemplate.getAuthorUsername());
 			if (!user.isPresent()) {

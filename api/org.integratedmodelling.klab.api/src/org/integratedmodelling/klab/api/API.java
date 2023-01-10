@@ -366,7 +366,11 @@ public interface API {
 		/**
 		 * URL path for current user profile, based on Authentication Token parsing.
 		 */
-		public static final String CURRENT_PROFILE = USER_BASE + "/me";
+		public static final String CURRENT_PROFILE = USER_BASE + "/me" + "/{id}";
+        /**
+         * Base URL path for checking user profile
+         */
+        public static final String CHECK_USER_ID = USER_BASE + "/checkUser" + "/{id}";
 
 		public static interface PARAMETERS {
 			/**

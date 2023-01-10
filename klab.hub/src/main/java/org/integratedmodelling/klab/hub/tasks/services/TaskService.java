@@ -16,9 +16,10 @@ public interface TaskService {
 	 * @param clazz the class of task
 	 * @param request HttpSevletRequest is needed to check the role in case of accept
 	 * @param parameters
+	 * @param opid 
 	 * @return
 	 */
-	public abstract List<Task> createTasks(Class<? extends Task> clazz, TaskParameters parameters);
+	public abstract List<Task> createTasks(Class<? extends Task> clazz, TaskParameters parameters, boolean opid);
 	public abstract void saveTask(Task task);
 	public abstract void saveAllTasks(Iterable<Task> tasks);
 	public abstract Task closeTask(String id, TaskStatus status);
@@ -57,5 +58,5 @@ public interface TaskService {
 	public abstract List<Task> getTasks(Class<? extends Task> clazz);
 	public abstract List<Task> getTasks(TaskStatus status);
 	public abstract List<Task> getTasks(Class<? extends Task> clazz, TaskStatus status);
-	public abstract Optional<Task> getTaskByToken(Class<? extends Task> type, TokenClickback token);
+	public abstract Optional<Task> getTaskByToken(Class<? extends Task> type, TokenClickback token);    
 }

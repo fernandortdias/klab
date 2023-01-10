@@ -1,9 +1,12 @@
 server:
   port: 8284
   servlet:
-    contextPath: /hub  
+    contextPath: /hub
+
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     bus:
       enabled: false
@@ -40,14 +43,16 @@ spring:
             scope:
               - email
               - profile
-              
+
 mongo:
   hostname: localhost
   port: 27017
-  
+
 logging:
   file: hub.log
-  
+  level:
+    org.springframework.web.servlet.mvc: TRACE
+
 site:
   callback: http://localhost:8080/#/callback
   clickback: "/clickback/{tokenString}"
@@ -56,16 +61,16 @@ site:
   url: http://localhost/hub/
   server:
     id: im
-    
+
 engine:
   url: https://localhost:8287
 
 email:
    server:
-      hostname: localhost
-      port: 3025
-      username: system
-      password: password
+      hostname: mail.privateemail.com
+      port: 587
+      username: noreply@integratedmodelling.org
+      password: huntalloyhuggingtoes
    replyable:
       replyable:
       general:
@@ -76,7 +81,7 @@ email:
          emailaddress: Admin <admin@integratedmodelling.org>
       noreply:
          emailaddress: No reply <noreply@integratedmodelling.org>
-      
+
 license:
   userId: "Klab Hub (This is the key for the Dev Hub) <info@integratedmodelling.org>"
   password: password
@@ -92,4 +97,8 @@ license:
     filename: "keyring/PubRing.pgp"
     digest: "cad134cc3dfcb0e96acb90af56532a96171f858c4c30335541932c0e00a66c9deab764805d9b9f08a49619af211b96305b512d4cf256e8a9c29877d06d207c72"
 
-      
+keycloak:
+  realm: SpringBootKleycloak
+  auth-server-url: https://login.integratedmodelling.org
+  resource: spring-boot-keycloack-client
+  bearer-only: true

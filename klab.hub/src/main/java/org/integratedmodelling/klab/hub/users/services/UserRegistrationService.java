@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserRegistrationService {
-	public abstract User registerNewUser(String username, String email)
+	public abstract User registerNewUser(String username, String email, boolean opid)
 			throws UserExistsException, UserEmailExistsException;
 	public abstract User verifyNewUser(String username);
 	public abstract User setPassword(String username, String password, String confirm);
-	public abstract User registerUser(User user);
+	public abstract User registerUser(User user, boolean opid);
 }

@@ -32,13 +32,13 @@ public class TaskServiceImpl implements TaskService{
 	EmailManager emailManager;
 
 	@Override
-	public List<Task> createTasks(Class<? extends Task> clazz, TaskParameters parameters) {
+	public List<Task> createTasks(Class<? extends Task> clazz, TaskParameters parameters, boolean opid) {
 		List<Task> tasks = null;
 		TaskBuilder builder = TaskFactory.getBuilder(clazz);
 		if (builder == null) {
 			throw new KlabAuthorizationException("Unable to get builder for class "+clazz);
 		}
-		tasks = builder.build(parameters);
+		tasks = builder.build(parameters, opid);
 		saveAllTasks(tasks);
 		for(Task task: tasks) {
 			if (task.getParentStatus() != TaskStatus.pending && task.isAutoAccepted()) {

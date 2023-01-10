@@ -2,7 +2,6 @@ package org.integratedmodelling.klab.hub.tasks.controllers;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
 import org.integratedmodelling.klab.api.API;
@@ -14,6 +13,8 @@ import org.integratedmodelling.klab.hub.tasks.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,15 +27,18 @@ public class CreateGroupsController {
 	TaskService service;
 	
 	@PostMapping(value=API.HUB.TASK_BASE, produces = "application/json", params=API.HUB.PARAMETERS.CREATE_GROUP)
-	@RolesAllowed({ "ROLE_ADMINISTRATOR", "ROLE_SYSTEM" })
+	//@RolesAllowed({ "ROLE_ADMINISTRATOR", "ROLE_SYSTEM" })
+	@PreAuthorize("hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_SYSTEM')")
 	public ResponseEntity<?> createGroupsResponse(
+	        @PathVariable String opid,
 			@RequestBody MongoGroup group,
 			HttpServletRequest request,
 			UriComponentsBuilder b) {
 		
 		List<Task> tasks = service.createTasks(
 				CreateGroupTask.class,
-				new CreateGroupTask.Parameters(Role.ROLE_ADMINISTRATOR, request, group));
+				new CreateGroupTask.Parameters(Role.ROLE_ADMINISTRATOR, request, group),
+				Boolean.valueOf(opid));
 	    
 	    return new ResponseEntity<>(tasks.get(0), HttpStatus.CREATED);
 	}

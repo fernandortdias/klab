@@ -1,5 +1,6 @@
 package org.integratedmodelling.klab.hub.users.services;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,10 @@ import org.integratedmodelling.klab.hub.commands.UpdateUser;
 import org.integratedmodelling.klab.hub.exception.UserByEmailDoesNotExistException;
 import org.integratedmodelling.klab.hub.exception.UserDoesNotExistException;
 import org.integratedmodelling.klab.hub.repository.UserRepository;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.AccessToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -56,14 +61,33 @@ public class UserProfileServiceImpl implements UserProfileService {
 					new UserDoesNotExistException());
 		return getUserSafeProfile(user);
 	}
+	
+	@Override
+    public Boolean existUserProfile(String username) {      
+        return userRepository.existsByNameIgnoreCase(username);
+    }
 
 	@Override
-	public ProfileResource getCurrentUserProfile() {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		User user = userRepository.findByNameIgnoreCase(username)
-				.orElseThrow(() ->  
-					new UserDoesNotExistException());
-		ProfileResource profile = objectMapper.convertValue(user, ProfileResource.class);
+	public ProfileResource getCurrentUserProfile(boolean opid) {
+	    String username = "";
+	    
+	    if (opid) {
+	        username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    } else {
+	        KeycloakAuthenticationToken authentication = 
+	                (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+	        Principal principal = (Principal) authentication.getPrincipal();
+
+            if (principal instanceof KeycloakPrincipal) {
+                KeycloakPrincipal<KeycloakSecurityContext> kPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
+                AccessToken token = kPrincipal.getKeycloakSecurityContext().getToken();
+                username = token.getPreferredUsername();
+            }
+	    }
+	    User user = userRepository.findByNameIgnoreCase(username)
+                .orElseThrow(() ->  
+                    new UserDoesNotExistException());
+        ProfileResource profile = objectMapper.convertValue(user, ProfileResource.class);
 		return profile.getSafeProfile();
 	}
 

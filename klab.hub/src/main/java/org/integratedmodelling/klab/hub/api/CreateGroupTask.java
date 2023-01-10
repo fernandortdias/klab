@@ -50,7 +50,7 @@ public class CreateGroupTask extends Task{
 		*/
 
 		@Override
-		public List<Task> build(TaskParameters parameters) {
+		public List<Task> build(TaskParameters parameters, boolean opid) {
 			ArrayList<Task> ret = new ArrayList<Task>(1);
 			CreateGroupTask.Parameters param;
 			if (parameters instanceof CreateGroupTask.Parameters) {
@@ -65,7 +65,7 @@ public class CreateGroupTask extends Task{
 			if(exists) {
 				throw new BadRequestException("Group by that name already present.");
 			}
-			ret.add(new CreateGroupTask(param.getRoleRequirement(), param.getGroup()));
+			ret.add(new CreateGroupTask(param.getRoleRequirement(), param.getGroup(), opid));
 			return ret;
 		}
 		
@@ -92,8 +92,8 @@ public class CreateGroupTask extends Task{
 	}
 
 	
-	private CreateGroupTask(Role roleRequirement, MongoGroup group) {
-		super(roleRequirement);
+	private CreateGroupTask(Role roleRequirement, MongoGroup group, boolean opid) {
+		super(roleRequirement, opid);
 		this.group = group;
 	}
 

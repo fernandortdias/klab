@@ -29,6 +29,7 @@ import org.springframework.security.web.authentication.preauth.RequestHeaderAuth
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@Order(1)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
   @Autowired
