@@ -19,7 +19,7 @@ knowledge. The resulting user experience enables workflows that only use the sem
 of the information in order to obtain results, making the need for modeling skills 
 a choice rather than a necessity for most users.
 
-While k.LAB has been in use for several years, k.LAB v 0.10.0 should be considered a 
+While k.LAB has been in use for several years, k.LAB v 0.11.0 should be considered a 
 preview release and all APIs and code structure are subject to change at this time. 
 It includes the following software components:
 
